@@ -1,0 +1,7 @@
+{
+  "name": "facerecognition-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

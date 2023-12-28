@@ -20,8 +20,9 @@
   <div class="button-group">
     <ion-button class="action-button" (click)="uploadImage()">Confirm Photo</ion-button>
     <ion-button class="action-button" color="medium" (click)="reset()">Reset</ion-button>
+    <ion-button class="action-button" *ngIf="downloadLinkAvailable" (click)="downloadCSV()">Download Attendance CSV</ion-button>
+
   </div>
-  <ion-button *ngIf="downloadLinkAvailable" (click)="downloadCSV()">Download Attendance CSV</ion-button>
 
 </ng-template>
 

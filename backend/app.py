@@ -23,10 +23,11 @@ def upload_image():
 
         # Process the image
         try:
-            img_encoded = main.process_image(file_path)
+            img_encoded, _ = main.process_image(file_path)
             os.remove(file_path)  # Remove the saved image file
             return jsonify({"success": "Image processed", "image": img_encoded}), 200
         except Exception as e:
+            os.remove(file_path)  # Ensure temporary file is deleted in case of error
             return jsonify({"error": str(e)}), 500
         
 @app.route('/download_csv', methods=['GET'])

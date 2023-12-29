@@ -49,28 +49,36 @@ export class Tab1Page {
   }
 
   
-async downloadCSV() {
-  const url = 'http://localhost:5000/download_csv';
-  const response = await this.http.get(url, { responseType: 'blob' }).toPromise();
-
-  const data = await new Response(response).arrayBuffer();
-  const fileName = 'attendance.csv';
-
-  try {
-    const result = await Filesystem.writeFile({
-      path: fileName,
-      data: btoa(new Uint8Array(data).reduce((data, byte) => data + String.fromCharCode(byte), '')),
-      directory: Directory.Documents
-      // encoding: 'base64'
-    });
-
-    console.log('File written to', result.uri);
-    
-    // Optionally, open the file here if needed
-  } catch (e) {
-    console.error('Unable to write file', e);
+  async downloadCSV() {
+    const url = 'http://localhost:5000/download_csv';
+  
+    try {
+      const response = await this.http.get(url, { responseType: 'blob' }).toPromise();
+  
+      // Check if the response is a Blob
+      if (response instanceof Blob) {
+        // Create a blob URL link
+        const blobUrl = window.URL.createObjectURL(response);
+  
+        // Create an anchor element and set the href to the blob URL
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'attendance.csv';  // File name for download
+        document.body.appendChild(a);  // Append to the document
+  
+        a.click();  // Trigger the download
+  
+        window.URL.revokeObjectURL(blobUrl);  // Clean up
+        a.remove();  // Remove the element
+      } else {
+        console.error('Response is not a blob:', response);
+      }
+    } catch (e) {
+      console.error('Unable to download file', e);
+    }
   }
-}
+  
+
 
   reset(){
     this.imagePreview= '';

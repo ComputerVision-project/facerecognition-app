@@ -12,6 +12,6 @@
       <stop offset="1" stop-color="#5d4eff"/>
     </linearGradient>
   </defs>
-  <rect id="Rectangle_1-3" data-name="Rectangle 1-3" class="cls-1" x="1.04" y="-.23" width="311.96" height="675.4"/>
-  <rect id="Rectangle_1-2" data-name="Rectangle 1-2" class="cls-1" x="1.04" y="-.23" width="311.96" height="675.4"/>
+  <rect id="Rectangle_1-3" data-name="Rectangle 1-3" class="cls-1" x="0" y="-.23" width="315" height="675.4"/>
+  <rect id="Rectangle_1-2" data-name="Rectangle 1-2" class="cls-1" x="0" y="-.23" width="315" height="675.4"/>
 </svg>

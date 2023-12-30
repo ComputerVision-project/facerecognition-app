@@ -26,9 +26,14 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 body{
-    background: url('./assets/Background_back-01.svg') no-repeat center/cover fixed;
-    background-size: cover;
-
+  background: url('./assets/Background_back-01.svg') no-repeat center center fixed;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./assets/Background_back-01.svg', sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./assets/Background_back-01.svg', sizingMethod='scale')";
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow:auto;
     // .top{
 
     //     position: absolute;
@@ -53,7 +58,7 @@ body{
 }
 
 ion-content {
-    --background: none;
+    --background:transparent;
 }
 ion-toolbar {
     --background: transparent;
@@ -74,4 +79,11 @@ ion-toolbar {
  ion-button{
     --background:#ffffff;
     color:#594BFD;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+    font-weight: bold;
+}
+ion-grid, ion-row, ion-col{
+    margin: 0;
+    padding: 0;
 }

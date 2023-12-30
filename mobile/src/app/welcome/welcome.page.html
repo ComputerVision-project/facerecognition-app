@@ -6,20 +6,24 @@
 
 <ion-content [fullscreen]="true">
   <ion-grid>
-    <ion-row  class="ion-justify-content-center">
-      <ion-col class="container">
-        <div class="logo">
-          <ion-icon src="../../assets/Logo No Txt.svg"></ion-icon>
+    <ion-row >
+      <ion-col>
+        <div class="container">
+          <div class="logo">
+            <ion-icon src="../../assets/Logo No Txt.svg"></ion-icon>
+          </div>
+          <div class="welcome">
+            Welcome to <br>
+            <span class="bold-text">FACE RECOGNITION</span>
+          </div>
+          
+          <div class="btn">
+            <ion-button shape="round">
+              <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+              Get Started</ion-button>
+          </div>
         </div>
-        <div class="welcome">
-          Welcome to FACE RECOGNITION
-        </div>
-        
-        <div class="btn">
-          <ion-button shape="round">
-            <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-            Get Started</ion-button>
-        </div>
+
       </ion-col>
     </ion-row>
   </ion-grid>

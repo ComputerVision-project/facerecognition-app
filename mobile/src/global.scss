@@ -27,34 +27,11 @@
 
 body{
   background: url('./assets/Background_back-01.svg') no-repeat center center fixed;
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./assets/Background_back-01.svg', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./assets/Background_back-01.svg', sizingMethod='scale')";
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   overflow:auto;
-    // .top{
-
-    //     position: absolute;
-    //     width:100%;
-    //     height: 100%;
-    //     top: 33px;
-    //     left: 301px;
-        
-    // }
-    // .bottom{
-
-    //     position: absolute;
-    //     width:100%;
-    //     height: 100%;
-    //     top: 606px;
-    //     left: 107px;
-        
-    // }
-    // .right{
-    //     transform: translate(20px, 50px);
-    // }
 }
 
 ion-content {
@@ -86,4 +63,12 @@ ion-toolbar {
 ion-grid, ion-row, ion-col{
     margin: 0;
     padding: 0;
+}
+ion-back-button{
+  --border-radius: 25px;
+  --background:#ffffff;
+  --padding-top: 7px;
+  --padding-bottom: 7px;
+  color:#594BFD;
+  font-weight: bold;
 }

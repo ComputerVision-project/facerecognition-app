@@ -1,0 +1,38 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Upload a Photo" name="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="container">
+          <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)">
+          <div class="upload" *ngIf="!imagePreview; else imagePreviewTemplate" (click)="fileInput.click()" >
+            <p class="upload-text">Upload Photo</p>
+          </div>
+          <ng-template #imagePreviewTemplate>
+            <img *ngIf="!processedImage" [src]="imagePreview" class="uploaded-image" />
+            <img *ngIf="processedImage" [src]="processedImage" class="uploaded-image" />
+
+          </ng-template>
+          <div class="btns">
+            <ion-button shape="round" (click)="uploadImage()">
+              Confirm
+            </ion-button>
+            <ion-button shape="round"(click)="reset()">
+              Reset
+            </ion-button>
+            <ion-button shape="round" *ngIf="downloadLinkAvailable" (click)="downloadCSV()">
+              Download CSV
+            </ion-button>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

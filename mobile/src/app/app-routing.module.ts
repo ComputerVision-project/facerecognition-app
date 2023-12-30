@@ -13,7 +13,11 @@ const routes: Routes = [
   {
     path: 'modes',
     loadChildren: () => import('./modes/modes.module').then( m => m.ModesPageModule)
+  },  {
+    path: 'upload',
+    loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
   }
+
 
 ];
 @NgModule({

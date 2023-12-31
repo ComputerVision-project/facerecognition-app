@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-upload',
@@ -12,7 +13,7 @@ export class UploadPage {
   processedImage:any ='';
   downloadLinkAvailable: boolean = false;
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private api:ApiService){}
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -25,14 +26,14 @@ export class UploadPage {
       reader.readAsDataURL(file);
     }
   }
-
+  
   uploadImage() {
     if (this.imageFile) {
       const formData = new FormData();
-      formData.append('file', this.imageFile); 
+      formData.append('file', this.imageFile);
 
-      this.http.post('http://localhost:5000/upload', formData).subscribe(
-        (response:any) => {
+      this.api.uploadImage(formData).subscribe(
+        (response: any) => {
           console.log('Upload successful', response);
           this.processedImage = 'data:image/jpeg;base64,' + response.image;
           this.downloadLinkAvailable = true;
@@ -46,13 +47,10 @@ export class UploadPage {
     }
   }
 
-  
   async downloadCSV() {
-    const url = 'http://localhost:5000/download_csv';
-  
-    try {
-      const response = await this.http.get(url, { responseType: 'blob' }).toPromise();
-  
+    this.api.downloadCSV().subscribe(
+      (response: Blob) => {
+        
       // Check if the response is a Blob
       if (response instanceof Blob) {
         // Create a blob URL link
@@ -71,10 +69,15 @@ export class UploadPage {
       } else {
         console.error('Response is not a blob:', response);
       }
-    } catch (e) {
-      console.error('Unable to download file', e);
-    }
+      },
+      (error) => {
+        console.error('Download failed', error);
+      }
+    );
   }
+
+  
+
   
 
 

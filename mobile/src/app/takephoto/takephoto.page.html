@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Take a Photo" name="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="container">
+          <div  id="cameraPreview" class="cameraPreview" *ngIf="!image && cameraActive">
+            
+          </div>
+          <ion-img class="cameraPreview" [src]="image" *ngIf="image && !cameraActive && !processedImage "></ion-img>
+          <ion-img class="cameraPreview" [src]="processedImage" *ngIf="processedImage"></ion-img>
+            <div class="cam"> 
+              <ion-icon (click)="captureImage()" src="../../assets/Aperature.svg"></ion-icon>
+            </div>
+          <ion-button *ngIf="image" (click)="uploadImage()">Confirm</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -4,7 +4,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    redirectTo:'welcome' ,
+    pathMatch: 'full'
   },
   {
     path: 'welcome',
@@ -13,9 +14,14 @@ const routes: Routes = [
   {
     path: 'modes',
     loadChildren: () => import('./modes/modes.module').then( m => m.ModesPageModule)
-  },  {
+  },
+  {
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
+  },
+  {
+    path: 'takephoto',
+    loadChildren: () => import('./takephoto/takephoto.module').then( m => m.TakephotoPageModule)
   }
 
 

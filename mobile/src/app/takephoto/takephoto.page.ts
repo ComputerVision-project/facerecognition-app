@@ -27,7 +27,10 @@ export class TakephotoPage implements OnInit {
     const cameraPreviewOptions: CameraPreviewOptions = {
       position: 'front',
       parent: 'cameraPreview',
-      className: 'cameraPreview'
+      className: 'cameraPreview',
+      toBack:true,
+      width:  window.innerWidth - 36, 
+      height: window.innerHeight - 190, 
     };
     CameraPreview.start(cameraPreviewOptions);
     this.cameraActive = true;

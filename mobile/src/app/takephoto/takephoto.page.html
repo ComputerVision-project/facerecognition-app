@@ -13,9 +13,10 @@
         <div class="container">
           <div  id="cameraPreview" class="cameraPreview" *ngIf="!image && cameraActive">
            
-            <div class="cam"> 
-              <ion-icon (click)="captureImage()" src="../../assets/Aperature.svg"></ion-icon>
-            </div>
+            
+          </div>
+          <div *ngIf="!image && cameraActive" class="cam"> 
+            <ion-icon (click)="captureImage()" src="../../assets/Aperature.svg"></ion-icon>
           </div>
           <ion-img class="backcontainer" [src]="image" *ngIf="image && !cameraActive && !processedImage "></ion-img>
           <ion-img class="backcontainer" [src]="processedImage" *ngIf="processedImage"></ion-img>

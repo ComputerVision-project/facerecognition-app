@@ -5,7 +5,8 @@ const config: CapacitorConfig = {
   appName: 'face recognition',
   webDir: 'www',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'http',
+    "allowNavigation": ["192.168.1.20:5000"]
   },
   plugins: {
     SplashScreen: {

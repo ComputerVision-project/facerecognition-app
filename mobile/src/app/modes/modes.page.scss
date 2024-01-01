@@ -1,10 +1,10 @@
 .container{
-    margin-top: 6vh;
-    height: calc(100vh - 27vh);
+    // margin-top: 6vh;
+    height: 87vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-around;
 }
 .logo{
     display: flex;
@@ -13,7 +13,7 @@
 
 }
 .logo ion-icon{
-    font-size: 10em;
+    font-size: 7em;
 
 }
 .logo > div{

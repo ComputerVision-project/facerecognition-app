@@ -72,3 +72,13 @@ ion-back-button{
   color:#594BFD;
   font-weight: bold;
 }
+.btns{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // gap: 7px;
+
+  > ion-button{
+      width: 182px;
+  }
+}

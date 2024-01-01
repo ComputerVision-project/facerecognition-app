@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Plugins } from '@capacitor/core';
 import { CameraPreview, CameraPreviewOptions, CameraPreviewPictureOptions } from '@capacitor-community/camera-preview';
 
 import '@capacitor-community/camera-preview'
-import { Camera } from '@capacitor/camera';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -27,7 +25,7 @@ export class TakephotoPage implements OnInit {
 
   openCamera() {
     const cameraPreviewOptions: CameraPreviewOptions = {
-      position: 'rear',
+      position: 'front',
       parent: 'cameraPreview',
       className: 'cameraPreview'
     };
@@ -83,6 +81,41 @@ export class TakephotoPage implements OnInit {
     }
   
     return new File([u8arr], filename, { type: mime });
+  }
+  async downloadCSV() {
+    this.api.downloadCSV().subscribe(
+      (response: Blob) => {
+        
+      // Check if the response is a Blob
+      if (response instanceof Blob) {
+        // Create a blob URL link
+        const blobUrl = window.URL.createObjectURL(response);
+  
+        // Create an anchor element and set the href to the blob URL
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'attendance.csv';  // File name for download
+        document.body.appendChild(a);  // Append to the document
+  
+        a.click();  // Trigger the download
+  
+        window.URL.revokeObjectURL(blobUrl);  // Clean up
+        a.remove();  // Remove the element
+      } else {
+        console.error('Response is not a blob:', response);
+      }
+      },
+      (error) => {
+        console.error('Download failed', error);
+      }
+    );
+  }
+
+  reset(){
+    this.image= null;
+    this.processedImage='';
+    this.openCamera();
+
   }
   
  

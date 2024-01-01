@@ -1,125 +1,93 @@
 import { Component, OnInit } from '@angular/core';
-import { CameraPreview, CameraPreviewOptions, CameraPreviewPictureOptions } from '@capacitor-community/camera-preview';
-
-import '@capacitor-community/camera-preview'
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ApiService } from '../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-takephoto',
   templateUrl: './takephoto.page.html',
   styleUrls: ['./takephoto.page.scss'],
 })
-export class TakephotoPage implements OnInit {
-  image :any = null;
-  cameraActive = false;
-  torchActive = false;
+export class TakephotoPage {
+  image: any = null;
   processedImage: any = '';
   downloadLinkAvailable: boolean = false;
-  
-  constructor(private api:ApiService) {
-    this.openCamera();
-  }
-  ngOnInit(): void {
-    this.openCamera();  
+
+  constructor(private api: ApiService, private router: Router) {}
+
+  ionViewWillEnter() {
+    this.captureImage();
   }
 
-  openCamera() {
-    const cameraPreviewOptions: CameraPreviewOptions = {
-      position: 'front',
-      parent: 'cameraPreview',
-      className: 'cameraPreview',
-      toBack:true,
-      width:  window.innerWidth - 36, 
-      height: window.innerHeight - 190, 
-    };
-    CameraPreview.start(cameraPreviewOptions);
-    this.cameraActive = true;
+  async captureImage() {
+    try {
+      const capturedImage = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera
+      });
+
+      // Convert the image to the format you need (base64, blob, etc)
+      this.image = capturedImage.webPath;
+    } catch (e) {
+      console.error('Error capturing image', e);
+    }
   }
 
-  async stopCamera(){
-    await CameraPreview.stop();
-    this.cameraActive = false;
-  }
-  async captureImage(){
-    const cameraPreviewOptions: CameraPreviewPictureOptions={
-      quality: 90
-    };
-
-    const result = await CameraPreview.capture(cameraPreviewOptions);
-    this.image = `data:image/jpeg;base64,${result.value}`;
-    this.stopCamera();
-  }
-
-  uploadImage() {
+  async uploadImage() {
     if (this.image) {
-      const formData = new FormData();
-      // Convert base64 image to File object
-      const file = this.base64toFile(this.image, 'capturedImage.jpg');
-      formData.append('file', file);
+      try {
+        const file = await this.uriToFile(this.image, 'capturedImage.jpg');
+        const formData = new FormData();
+        formData.append('file', file);
   
-      this.api.uploadImage(formData).subscribe(
-        (response: any) => {
-          console.log('Upload successful', response);
-          this.processedImage = 'data:image/jpeg;base64,' + response.image;
-          this.downloadLinkAvailable = true;
-        },
-        (error) => {
-          console.error('Upload failed', error);
-        }
-      );
+        this.api.uploadImage(formData).subscribe(
+          (response: any) => {
+            console.log('Upload successful', response);
+            this.processedImage = 'data:image/jpeg;base64,' + response.image;
+            this.downloadLinkAvailable = true;
+          },
+          (error) => {
+            console.error('Upload failed', error);
+          }
+        );
+      } catch (error) {
+        console.error('Error converting URI to file', error);
+      }
     } else {
       console.error('No image captured');
     }
   }
   
-  private base64toFile(base64String: string, filename: string): File {
-    const arr = base64String.split(',');
-    const mime = arr[0].match(/:(.*?);/)![1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-  
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-  
-    return new File([u8arr], filename, { type: mime });
-  }
+
   async downloadCSV() {
     this.api.downloadCSV().subscribe(
       (response: Blob) => {
-        
-      // Check if the response is a Blob
-      if (response instanceof Blob) {
-        // Create a blob URL link
         const blobUrl = window.URL.createObjectURL(response);
-  
-        // Create an anchor element and set the href to the blob URL
         const a = document.createElement('a');
         a.href = blobUrl;
-        a.download = 'attendance.csv';  // File name for download
-        document.body.appendChild(a);  // Append to the document
-  
-        a.click();  // Trigger the download
-  
-        window.URL.revokeObjectURL(blobUrl);  // Clean up
-        a.remove();  // Remove the element
-      } else {
-        console.error('Response is not a blob:', response);
-      }
+        a.download = 'attendance.csv';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+        a.remove();
       },
       (error) => {
         console.error('Download failed', error);
       }
     );
   }
-
-  reset(){
-    this.image= null;
-    this.processedImage='';
-    this.openCamera();
-
+  private async uriToFile(uri: string, filename: string): Promise<File> {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: 'image/jpeg' });
   }
   
- 
+
+  reset() {
+    this.image = null;
+    this.processedImage = '';
+    this.router.navigate(['modes']);
+  }
 }

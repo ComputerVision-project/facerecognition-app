@@ -19,6 +19,9 @@ if not firebase_admin._apps:
 with open('Encodingfile.p', 'rb') as file:
     encodelistknown, studIds = pickle.load(file)
 
+
+
+
 def resize(img, scale_percent):
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
@@ -39,9 +42,8 @@ def process_image(file_path):
 
         attendance_list = []
 
-        # Detect faces using a faster but less accurate model for quick processing
-        face_locations = face_recognition.face_locations(img_small, model="hog")
-
+        face_locations = face_recognition.face_locations(img_small, model="hog",number_of_times_to_upsample=2)
+        
         # If no faces are detected, there's no point in continuing
         if not face_locations:
             print("No faces detected in the image.")
@@ -49,6 +51,9 @@ def process_image(file_path):
 
         # Encode faces in the image
         encode_img = face_recognition.face_encodings(img_small, face_locations)
+
+        new_attendance_list = []
+        added_student_ids = set()
 
         for encodeface, faceloc in zip(encode_img, face_locations):
             matches = face_recognition.compare_faces(encodelistknown, encodeface, tolerance=0.6)
@@ -71,8 +76,9 @@ def process_image(file_path):
             cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(img, name, (x1, y2 + 20), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2)
 
-            # Add student info to the attendance list
-            attendance_list.append([student_id, name, email, datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
+            if student_id not in added_student_ids:
+                new_attendance_list.append([student_id, name, email, datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
+                added_student_ids.add(student_id)
 
         # Write attendance to CSV file
         with open('attendance.csv', 'w', newline='') as file:

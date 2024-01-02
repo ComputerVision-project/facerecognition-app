@@ -56,11 +56,11 @@ def process_image(file_path):
         added_student_ids = set()
 
         for encodeface, faceloc in zip(encode_img, face_locations):
-            matches = face_recognition.compare_faces(encodelistknown, encodeface, tolerance=0.6)
+            matches = face_recognition.compare_faces(encodelistknown, encodeface, tolerance=0.7)
             facedistance = face_recognition.face_distance(encodelistknown, encodeface)
             matchIndex = np.argmin(facedistance)
 
-            if matches[matchIndex] and facedistance[matchIndex] < 0.6:
+            if matches[matchIndex] and facedistance[matchIndex] < 0.7:
                 student_id = studIds[matchIndex]
                 student_info = db.reference(f'Students/{student_id}').get() or {}
                 name = student_info.get('name', "Unknown")
@@ -83,8 +83,8 @@ def process_image(file_path):
         # Write attendance to CSV file
         with open('attendance.csv', 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["ID", "Name", "Email", "Date"])
-            writer.writerows(attendance_list)
+            for entry in new_attendance_list:
+                writer.writerow(entry)
 
         # Encode the processed image to base64
         _, buffer = cv2.imencode('.jpg', img)

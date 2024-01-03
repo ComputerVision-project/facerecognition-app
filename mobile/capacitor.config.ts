@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'www',
   server: {
     androidScheme: 'http',
-    "allowNavigation": ["192.168.1.20:5000"]
+    "allowNavigation": ["51.20.121.181:5000","ec2-51-20-121-181.eu-north-1.compute.amazonaws.com:5000"]
   },
   plugins: {
     SplashScreen: {

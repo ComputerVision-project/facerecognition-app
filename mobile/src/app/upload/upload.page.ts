@@ -40,7 +40,7 @@ export class UploadPage {
         },
         (error) => {
           console.error('Upload failed', error);
-        }
+        }   
       );
     } else {
       console.error('No file selected');
